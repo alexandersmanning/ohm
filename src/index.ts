@@ -1,4 +1,2 @@
 import ohm from './ohm';
-export {
-  ohm,
-}
+export { ohm };

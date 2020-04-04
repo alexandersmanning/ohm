@@ -1,6 +1,5 @@
-function ohm() {
+function ohm(): void {
   console.log('hi');
-  return { cat: 'true' }
 }
 
 export default ohm;

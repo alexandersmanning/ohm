@@ -1,0 +1,19 @@
+{
+  "name": "ohm",
+  "version": "0.0.1",
+  "description": "A Virtual DOM Builder",
+  "main": "index.js",
+  "repository": "https://github.com/alexandersmanning/ohm",
+  "author": "Alex Manning",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "lint": "tsc --noEmit && eslint '*/**/*.ts'"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "typescript": "^3.8.3"
+  }
+}

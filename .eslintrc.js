@@ -17,6 +17,8 @@ module.exports = {
     'prettier/@typescript-eslint',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
+    'plugin:mocha/recommended',
+    'plugin:chai-expect/recommended',
   ],
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'error',

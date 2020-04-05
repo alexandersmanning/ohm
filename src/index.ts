@@ -1,2 +1,2 @@
-import ohm from './ohm';
+import { ohm } from './ohm';
 export { ohm };

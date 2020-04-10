@@ -48,9 +48,11 @@ function ohm(
         currentChar = currentString[charIdx];
         if (mode === MODE_TEXT) {
           switch (currentChar) {
-            case '<':
-              if (buffer.length) {
-                current.children.push(buffer.join('').trim());
+            case '<': {
+              const line = buffer.join('').trim();
+
+              if (line.length) {
+                current.children.push(line);
               }
 
               if (currentString[charIdx + 1] === '/') {
@@ -66,6 +68,7 @@ function ohm(
                 }
               }
               break;
+            }
             default:
               buffer.push(currentChar);
               break;

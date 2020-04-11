@@ -4,7 +4,7 @@
     "module": "commonjs",
     "target": "es5",
     "strict": true,
-    "lib": ["esnext", "dom"],
+    "lib": ["es2019", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",

@@ -1,6 +1,8 @@
 const MODE_TEXT = 0;
 const MODE_TAG = 1;
 const MODE_CLOSING = 2;
+const MODE_PROPS = 3;
+const MODE_PROPS_VALUE = 4;
 
 interface OhmDOM {
   tag: string;
@@ -11,12 +13,12 @@ class OhmNode {
   public parent: OhmNode | void;
   public tag: string;
   public children: Array<OhmNode | string>;
-  public props: string[];
+  public props: Record<string, string>;
 
   constructor(parent: OhmNode | void) {
     this.parent = parent;
     this.children = [];
-    this.props = [];
+    this.props = {};
     this.tag = '';
   }
 }
@@ -39,6 +41,7 @@ function ohm(
   let currentChar = '';
   let mode = MODE_TEXT;
   let child;
+  let currentProp: string;
 
   for (let idx = 0; idx < staticFields.length; idx++) {
     // TODO review pointers for JS perf.
@@ -76,10 +79,18 @@ function ohm(
         } else if (mode === MODE_TAG) {
           switch (currentChar) {
             case '>':
-            case ' ':
-              current.tag = buffer.join('');
+              if (!current.tag) {
+                current.tag = buffer.join('').trim();
+              }
               buffer = [];
               mode = MODE_TEXT;
+              break;
+            case ' ':
+              if (!current.tag) {
+                current.tag = buffer.join('').trim();
+              }
+              buffer = [];
+              mode = MODE_PROPS;
               break;
             default:
               buffer.push(currentChar);
@@ -92,6 +103,50 @@ function ohm(
             buffer = [];
           } else {
             break;
+          }
+        } else if (mode === MODE_PROPS) {
+          switch (currentChar) {
+            // TODO: fix assumption that there is always a quote
+            case '"': {
+              const line = buffer.join('').trim();
+              if (line.length) {
+                currentProp = line;
+              }
+              buffer = [];
+              mode = MODE_PROPS_VALUE;
+              break;
+            }
+            case '>': {
+              const line = buffer.join('').trim();
+              if (line.length) {
+                current.props[line] = '';
+                currentProp = '';
+              }
+              buffer = [];
+              mode = MODE_TEXT;
+              break;
+            }
+            case '=':
+              break;
+            default:
+              buffer.push(currentChar);
+              break;
+          }
+        } else if (mode === MODE_PROPS_VALUE) {
+          switch (currentChar) {
+            case '"': {
+              const line = buffer.join('').trim();
+              if (line.length) {
+                current.props[currentProp] = line;
+              }
+              buffer = [];
+              currentProp = '';
+              mode = MODE_PROPS;
+              break;
+            }
+            default:
+              buffer.push(currentChar);
+              break;
           }
         }
       }
